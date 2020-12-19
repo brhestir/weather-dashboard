@@ -15,7 +15,7 @@ View the site at [weather-dashboard](https://brhestir.github.io/weather-dashboar
 
 ## Credits
 - gt-atl-fsf-ft-11-2020-u-c
-- OpenWeather API](https://openweathermap.org/api)
+- [OpenWeather API](https://openweathermap.org/api)
 
 ## Licence
 MIT
