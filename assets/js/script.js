@@ -37,15 +37,15 @@ $(document).ready(function(){
     }).then(function(responseUV){
       $("#cityUVIndex").text("UV Index: " + responseUV.value);
       if(responseUV.value <= 3){
-        console.log("responseUV.value < 3");
+        
         $("#cityUVIndex").attr("style", "background-color: rgb(114, 217, 136)");
       }
       else if ((responseUV.value > 3) || (responseUV.value < 7)) {
-        console.log(responseUV.value);
+        
         $("#cityUVIndex").attr("style", "background-color: yellow");
       }
       else {
-        console.log(responseUV.value);
+        
         $("#cityUVIndex").attr("style", "background-color: red");
       }
     })
@@ -88,7 +88,7 @@ $(document).ready(function(){
   };
 
   function getCityData(cityName){
-    console.log("getCityData Called");
+    
 
     //var cityName = "Atlanta";
     var cityQueryUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&appid=" + apiKey;
@@ -97,7 +97,7 @@ $(document).ready(function(){
       url: cityQueryUrl,
       method: "GET"
     }).then(function(response) {
-      console.log(response);
+      
 
       renderOneDayForecast(response);
       getFiveDayData(cityName);
@@ -106,7 +106,7 @@ $(document).ready(function(){
   };
 
   function getFiveDayData(cityName){
-    console.log("getFiveDayData Called");
+    
     
     var fiveDayQueryUrl = "https://api.openweathermap.org/data/2.5/forecast?q="+ cityName + "&appid=" + apiKey;
     
@@ -114,7 +114,7 @@ $(document).ready(function(){
       url: fiveDayQueryUrl,
       method: "GET"
     }).then(function(response) {
-      console.log(response);
+      
 
       renderFiveDayForecast(response);
 
@@ -136,7 +136,7 @@ $(document).ready(function(){
   };
 
   function searchHistoryCity(event){
-    console.log($(this))
+    
     localStorage.setItem("cityHistory", $(this).text());
     getCityData($(this).text());
   }
