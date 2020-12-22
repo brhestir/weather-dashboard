@@ -26,10 +26,31 @@ $(document).ready(function(){
 
   function renderFiveDayForecast(fiveDayQueryResponse){
     //$("#cityName").text(fiveDayQueryResponse.name);
-    var i = 8;
-    $("#dateP1").text((fiveDayQueryResponse.list[i].dt_txt).split(" ")[0]);
-    $("#tempP1").text("Temperature: " + convertKtoF(parseInt(fiveDayQueryResponse.list[i].main.temp)));
-    $("#humidityP1").text("Humidity: " + fiveDayQueryResponse.list[i].main.humidity);
+    for(var i=8; i < 40; i+=8){
+      var cardEl = $("<div>").addClass("card text-white bg-primary m-3 ");
+      cardEl.attr("style", "max-width: 10rem;");
+      $("#five-day-div").append(cardEl);
+
+      var dateEl = $("<div>").text((fiveDayQueryResponse.list[i].dt_txt).split(" ")[0]);
+      $(dateEl).addClass("card-header");
+      $(cardEl).append(dateEl);
+
+      var cardBodyEl = $("<div>").addClass("card-body");
+      $(cardEl).append(cardBodyEl);
+
+      // TODO: CHANGE THIS BASED ON WEATHER CONDITION
+      var iconEl = $("<div>").addClass("fas fa-sun");
+
+      var tempEl = $("<p>").text("Temperature: " + convertKtoF(parseInt(fiveDayQueryResponse.list[i].main.temp)));
+      var humidityEl = $("<p>").text("Humidity: " + fiveDayQueryResponse.list[i].main.humidity);
+      
+      
+      $(cardBodyEl).append(iconEl);
+      $(cardBodyEl).append(tempEl);
+      $(cardBodyEl).append(humidityEl);
+      
+    }
+    
   }
 
   function convertKtoF(kelvinTemp){
