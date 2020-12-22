@@ -16,15 +16,28 @@ $(document).ready(function(){
     } else {
       var cityHistory = localStorage.getItem("cityHistory");
       getCityData(cityHistory);
+      var oldCityBtn = $("<button>");
+      oldCityBtn.addClass("list-group-item");
+      oldCityBtn.text(cityHistory);
+      $("#history").prepend(oldCityBtn);
     }
   }
 
   function renderOneDayForecast(cityDataResponse){
     $("#cityName").text(cityDataResponse.name);
-    $("#cityTemp").text("Temperature: " + convertKtoF(parseInt(cityDataResponse.main.temp)));
-    $("#cityHumidity").text("Humidity: " + cityDataResponse.main.humidity);
-    $("#cityWindSpeed").text("Wind Speed: " + cityDataResponse.wind.speed);
-    // $("#cityUVIndex").text(cityDataResponse.)
+    $("#cityTemp").text("Temperature: " + convertKtoF(parseInt(cityDataResponse.main.temp)) + " °F");
+    $("#cityHumidity").text("Humidity: " + cityDataResponse.main.humidity + "%");
+    $("#cityWindSpeed").text("Wind Speed: " + cityDataResponse.wind.speed + " MPH");
+    var latitude = cityDataResponse.coord.lat;
+    var longitude = cityDataResponse.coord.lon;
+    var uvQueryURL = "https://api.openweathermap.org/data/2.5/uvi?lat=" + latitude + "&lon=" + longitude + "&appid=" + apiKey;
+    $.ajax({
+      url: uvQueryURL,
+      method: "GET"
+    }).then(function(responseUV){
+      $("#cityUVIndex").text("UV Index: " + responseUV.value);
+    })
+    
   }
 
   function renderFiveDayForecast(fiveDayQueryResponse){
@@ -106,7 +119,6 @@ $(document).ready(function(){
     var oldCityBtn = $("<button>");
     oldCityBtn.addClass("list-group-item");
     oldCityBtn.text(cityName);
-    //$(oldCityBtn).addEventListener("click", searchHistory());
     $("#history").prepend(oldCityBtn);
   
   };
