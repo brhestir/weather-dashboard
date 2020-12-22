@@ -24,7 +24,7 @@ $(document).ready(function(){
   }
 
   function renderOneDayForecast(cityDataResponse){
-    $("#cityName").text(cityDataResponse.name);
+    $("#cityName").text(cityDataResponse.name + " (" + moment().format("L") + ")");
     $("#cityTemp").text("Temperature: " + convertKtoF(parseInt(cityDataResponse.main.temp)) + " °F");
     $("#cityHumidity").text("Humidity: " + cityDataResponse.main.humidity + "%");
     $("#cityWindSpeed").text("Wind Speed: " + cityDataResponse.wind.speed + " MPH");
@@ -59,7 +59,7 @@ $(document).ready(function(){
 
     for(var i=0; i < 40; i+=8){
       var cardEl = $("<div>").addClass("card text-white bg-primary m-1 ");
-      cardEl.attr("style", "max-width: 10rem;");
+      cardEl.attr("style", "max-width: 11rem;");
       $("#five-day-div").append(cardEl);
 
       var dateEl = $("<div>").text((fiveDayQueryResponse.list[i].dt_txt).split(" ")[0]);
@@ -72,8 +72,8 @@ $(document).ready(function(){
       // TODO: CHANGE THIS BASED ON WEATHER CONDITION
       var iconEl = $("<div>").addClass("fas fa-sun");
 
-      var tempEl = $("<p>").text("Temp: " + convertKtoF(parseInt(fiveDayQueryResponse.list[i].main.temp)));
-      var humidityEl = $("<p>").text("Humidity: " + fiveDayQueryResponse.list[i].main.humidity);
+      var tempEl = $("<p>").text("Temp: " + convertKtoF(parseInt(fiveDayQueryResponse.list[i].main.temp)) + " °F");
+      var humidityEl = $("<p>").text("Humidity: " + fiveDayQueryResponse.list[i].main.humidity + "%");
       
       $(cardBodyEl).append(iconEl);
       $(cardBodyEl).append(tempEl);
