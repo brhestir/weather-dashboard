@@ -17,7 +17,7 @@ $(document).ready(function(){
 
   function renderOneDayForecast(cityDataResponse){
     $("#cityName").text(cityDataResponse.name);
-    $("#cityTemp").text("Temperature: " + cityDataResponse.main.temp)
+    $("#cityTemp").text("Temperature: " + convertKtoF(parseInt(cityDataResponse.main.temp)))
     $("#cityHumidity").text("Humidity: " + cityDataResponse.main.humidity)
     $("#cityWindSpeed").text("Wind Speed: " + cityDataResponse.wind.speed)
     // $("#cityUVIndex").text(cityDataResponse.)
@@ -25,6 +25,10 @@ $(document).ready(function(){
 
   function renderFiveDayForecast(){
 
+  }
+
+  function convertKtoF(kelvinTemp){
+    return (((9/5)*(kelvinTemp-273.15) + 32)).toFixed(2);
   }
   // FUNCTION CALLS
   // EVENT LISTENERS
