@@ -36,6 +36,18 @@ $(document).ready(function(){
       method: "GET"
     }).then(function(responseUV){
       $("#cityUVIndex").text("UV Index: " + responseUV.value);
+      if(responseUV.value <= 3){
+        console.log("responseUV.value < 3");
+        $("#cityUVIndex").attr("style", "background-color: rgb(114, 217, 136)");
+      }
+      else if ((responseUV.value > 3) || (responseUV.value < 7)) {
+        console.log(responseUV.value);
+        $("#cityUVIndex").attr("style", "background-color: yellow");
+      }
+      else {
+        console.log(responseUV.value);
+        $("#cityUVIndex").attr("style", "background-color: red");
+      }
     })
     
   }
