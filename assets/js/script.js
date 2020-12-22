@@ -15,7 +15,7 @@ $(document).ready(function(){
       localStorage.setItem("cityHistory", "")
     } else {
       var cityHistory = localStorage.getItem("cityHistory");
-      //getCityData(cityHistory);
+      getCityData(cityHistory);
     }
   }
 
