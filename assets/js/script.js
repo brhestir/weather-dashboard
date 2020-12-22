@@ -7,13 +7,16 @@ $(document).ready(function(){
 
   // JAVASCRIPT VARIABLES
   var apiKey = "b4870574d339978807fdf94ae06ca36a"
-  var cityName = "Atlanta";
-  var cityQueryUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&appid=" + apiKey;
-  var fiveDayQueryUrl = "https://api.openweathermap.org/data/2.5/forecast?q="+ cityName + "&appid=" + apiKey;
-  var cityDataResponse = [];
+  var cityHistory = "";
+
   // FUNCTION DEFINITIONS
   function init(){
-
+    if ((localStorage.getItem("cityHistory") === null) || (localStorage.getItem("cityHistory") == "")){
+      localStorage.setItem("cityHistory", "")
+    } else {
+      var cityHistory = localStorage.getItem("cityHistory");
+      //getCityData(cityHistory);
+    }
   }
 
   function renderOneDayForecast(cityDataResponse){
@@ -26,8 +29,11 @@ $(document).ready(function(){
 
   function renderFiveDayForecast(fiveDayQueryResponse){
     //$("#cityName").text(fiveDayQueryResponse.name);
-    for(var i=8; i < 40; i+=8){
-      var cardEl = $("<div>").addClass("card text-white bg-primary m-3 ");
+    
+    $("#five-day-div").empty()
+
+    for(var i=0; i < 40; i+=8){
+      var cardEl = $("<div>").addClass("card text-white bg-primary m-1 ");
       cardEl.attr("style", "max-width: 10rem;");
       $("#five-day-div").append(cardEl);
 
@@ -41,9 +47,8 @@ $(document).ready(function(){
       // TODO: CHANGE THIS BASED ON WEATHER CONDITION
       var iconEl = $("<div>").addClass("fas fa-sun");
 
-      var tempEl = $("<p>").text("Temperature: " + convertKtoF(parseInt(fiveDayQueryResponse.list[i].main.temp)));
+      var tempEl = $("<p>").text("Temp: " + convertKtoF(parseInt(fiveDayQueryResponse.list[i].main.temp)));
       var humidityEl = $("<p>").text("Humidity: " + fiveDayQueryResponse.list[i].main.humidity);
-      
       
       $(cardBodyEl).append(iconEl);
       $(cardBodyEl).append(tempEl);
@@ -51,14 +56,18 @@ $(document).ready(function(){
       
     }
     
-  }
+  };
 
   function convertKtoF(kelvinTemp){
     return (((9/5)*(kelvinTemp-273.15) + 32)).toFixed(2);
-  }
+  };
 
-  function getCityData(){
+  function getCityData(cityName){
     console.log("getCityData Called");
+
+    //var cityName = "Atlanta";
+    var cityQueryUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&appid=" + apiKey;
+
     $.ajax({
       url: cityQueryUrl,
       method: "GET"
@@ -66,13 +75,16 @@ $(document).ready(function(){
       console.log(response);
 
       renderOneDayForecast(response);
-      getFiveDayData();
+      getFiveDayData(cityName);
 
     });
   };
 
-  function getFiveDayData(){
+  function getFiveDayData(cityName){
     console.log("getFiveDayData Called");
+    
+    var fiveDayQueryUrl = "https://api.openweathermap.org/data/2.5/forecast?q="+ cityName + "&appid=" + apiKey;
+    
     $.ajax({
       url: fiveDayQueryUrl,
       method: "GET"
@@ -82,16 +94,34 @@ $(document).ready(function(){
       renderFiveDayForecast(response);
 
     });
+  };
+
+  function searchNewCity(event){
+    event.preventDefault();
+    var cityName = $("#city-search-input").val();
+    getCityData(cityName);
+    cityHistory = cityName;
+    localStorage.setItem("cityHistory", cityHistory);
+    
+    var oldCityBtn = $("<button>");
+    oldCityBtn.addClass("list-group-item");
+    oldCityBtn.text(cityName);
+    //$(oldCityBtn).addEventListener("click", searchHistory());
+    $("#history").prepend(oldCityBtn);
+  
+  };
+
+  function searchHistoryCity(event){
+    console.log($(this))
+    localStorage.setItem("cityHistory", $(this).text());
+    getCityData($(this).text());
   }
 
   // FUNCTION CALLS
+  init();
+
   // EVENT LISTENERS
-
-  $("#search-submit").on("click", getCityData());
-
+  $("#search-submit").on("click", searchNewCity);
+  $("#history").on("click", "button", searchHistoryCity);
   
-
-
-  
-
 });
