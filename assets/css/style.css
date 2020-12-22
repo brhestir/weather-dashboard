@@ -1,5 +1,17 @@
 /* style.css */
 
+html {
+  height: 100%;
+}
+
+body {
+  height: 100%
+}
+
+.full-height {
+  height: 100%;
+}
+
 .top-div {
   background-color: rgb(52, 58, 64);
 }
